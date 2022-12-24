@@ -20,8 +20,17 @@ nodo_t* XOR(nodo_t *a, nodo_t *b){
     return (nodo_t*)((uintptr_t)(a)^(uintptr_t)(b));
 }
 
-// Inicializa ambos apuntadores de la lista en NULL
-void inicializar(lista_t *Lista){
+// Funcion que guarda memoria y crea un nodo para la lista
+nodo_t* crearNodo(nodo_t *Nodo, int e){
+    // Guarda memoria para el nuevo nodo
+    Nodo = (nodo_t*)malloc(sizeof(nodo_t));
+    Nodo->elemento = e;
+
+    return Nodo;
+}
+
+// Crea una nueva lista
+void crearLista(lista_t *Lista){
     Lista->cabeza = NULL;
     Lista->cola = NULL;
 }
@@ -35,9 +44,7 @@ int esVacia(lista_t *Lista){
 
 // Inserta un nodo al inicio de la lista XOR y lo hace la nueva cabeza de la lista
 void insertarPrincipio(lista_t *Lista, int e){
-    // Guarda memoria para el nuevo nodo
-    nodo_t *nuevo = (nodo_t*)malloc(sizeof(nodo_t));
-    nuevo->elemento = e;
+    nodo_t *nuevo = crearNodo(nuevo, e);
 
     // Como el nuevo elemento se ingresa al principio, ant_sig del nuevo nodo sera el XOR de la actual cabeza con NULL
     nuevo->ant_sig = XOR(Lista->cabeza, NULL);
@@ -55,8 +62,34 @@ void insertarPrincipio(lista_t *Lista, int e){
         // Cambiamos la cabeza
         Lista->cabeza = nuevo;
     }
+
+    printf("Se ingreso el elemento %d al inicio de la lista\n", e);
 }
 
+// Inserta un elemento al final de la lista
+void insertarFinal(lista_t *Lista, int e){
+    nodo_t *nuevo = crearNodo(nuevo, e);
+
+    // Como el nuevo elemento se ingresa al final, ant_sig del nuevo nodo sera el XOR de la actual cola con NULL
+    nuevo->ant_sig = XOR(Lista->cola, NULL);
+
+    // Si la lista esta vacia, entonces se le asigna el nuevo a la cabeza y a la cola
+    if (esVacia(Lista)){
+        Lista->cabeza = nuevo;
+        Lista->cola = nuevo;
+    }   // Si la lista no esta vacia, entonces ant_sig de la cola actual sera XOR del nuevo nodo y el nodo anterior a la cola 
+    else {
+        nodo_t *ant = XOR(Lista->cola->ant_sig, NULL);
+        Lista->cola->ant_sig = XOR(ant, nuevo);
+
+        //Cambiamos la cola
+        Lista->cola = nuevo;
+    }
+
+    printf("Se ingreso el elemento %d al final de la lista\n", e);
+}
+
+// Muestra la lista de inicio a fin
 void listarInicioAFinal(lista_t Lista){
     nodo_t *actual = Lista.cabeza;
     nodo_t *previo = NULL;
@@ -64,6 +97,7 @@ void listarInicioAFinal(lista_t Lista){
 
     printf("Nodos de la lista doblemente enlazada\n");
 
+    printf("cabeza-->");
     while(actual != NULL){
         // Imprime el nodo
         printf("%d ", actual->elemento);
@@ -77,35 +111,100 @@ void listarInicioAFinal(lista_t Lista){
         previo = actual;
         actual = siguiente;
     }
+    printf("\b<--cola\n");
+}
+
+// Muestra la lista desde el final hasta el inicio
+void listarFinalAInicio(lista_t Lista){
+    nodo_t *actual = Lista.cola;
+    nodo_t *siguiente = NULL;
+    nodo_t *previo;
+
+    printf("Nodos de la lista doblemente enlazada\n");
+
+    printf("cola-->");
+    while (actual != NULL){
+        printf("%d ", actual->elemento);
+
+        previo = XOR(siguiente, actual->ant_sig);
+
+        siguiente = actual;
+        actual = previo;
+    }
+    printf("\b<--cabeza\n");
+}
+
+int buscar(lista_t Lista, int e){
+    nodo_t *actual = Lista.cabeza;
+    nodo_t *previo = NULL;
+    nodo_t *siguiente;
+
+    while (actual != NULL){
+        if (actual->elemento == e){
+            printf("Se consiguio el elemento %d en la lista\n", e);
+            return 1;
+        } else {
+            siguiente = XOR(previo, actual->ant_sig);
+
+            previo = actual;
+            actual = siguiente;
+        }
+    }
+    printf("No se consiguio el elemento %d\n", e);
+    return 0;
 }
 
 // Programa de testeo
 int main(void){
-    lista_t listap;
+    lista_t lista1, lista2;
 
-    inicializar(&listap);
+    crearLista(&lista1);
+    crearLista(&lista2);
 
-    if (esVacia(&listap))
+    if (esVacia(&lista1))
         printf("La lista esta vacia\n");
     else 
         printf("La lista NO esta vacia\n");
 
-    insertarPrincipio(&listap, 15);
-    insertarPrincipio(&listap, 10);
-    insertarPrincipio(&listap, 50);
-    insertarPrincipio(&listap, 25);
-    insertarPrincipio(&listap, 30);
-    insertarPrincipio(&listap, 20);
-    insertarPrincipio(&listap, 35);
-    insertarPrincipio(&listap, 45);
-
-
-    if (esVacia(&listap))
+    if (esVacia(&lista2))
         printf("La lista esta vacia\n");
     else 
         printf("La lista NO esta vacia\n");
 
-    listarInicioAFinal(listap);
+    insertarFinal(&lista1, 5);
+    insertarFinal(&lista2, 3);
+    insertarPrincipio(&lista1, 15);
+    insertarFinal(&lista2, 9);
+    insertarPrincipio(&lista1, 10);
+    insertarPrincipio(&lista2, 12);
+    insertarPrincipio(&lista1, 50);
+    insertarPrincipio(&lista2, 6);
+    insertarFinal(&lista1, 25);
+    insertarPrincipio(&lista2, 15);
+
+
+    if (esVacia(&lista1))
+        printf("La lista esta vacia\n");
+    else 
+        printf("La lista NO esta vacia\n");
+
+    if (esVacia(&lista2))
+        printf("La lista esta vacia\n");
+    else 
+        printf("La lista NO esta vacia\n");
+
+    listarInicioAFinal(lista1);
+    printf("\n");
+    listarInicioAFinal(lista2);
+    printf("\n");
+    listarFinalAInicio(lista1);
+    printf("\n");
+    listarFinalAInicio(lista2);
+
+    buscar(lista1, 25);
+    buscar(lista2, 9);
+    buscar(lista1, 3);
+    buscar(lista1, 50);
 
     
     return 0;

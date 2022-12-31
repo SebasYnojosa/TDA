@@ -99,6 +99,7 @@ int insertarFinal(lista_t *Lista, int e){
 }
 
 // Inserta un elemento de forma ordenada en la lista
+
 int insertarOrdenado(lista_t *Lista, int e){
     nodo_t *nuevo;
 
@@ -154,6 +155,62 @@ int insertarOrdenado(lista_t *Lista, int e){
     return 1;
 } 
 
+// Borra el primer elemento de la lista
+int borrarPrimero(lista_t *Lista, int *e){
+    if (esVacia(Lista)){
+        e = NULL;
+        printf("No se puede eliminar ningun elemento de la lista porque esta vacia\n");
+        return 0;
+    }
+
+    *e = Lista->cabeza->elemento;
+
+    if (Lista->cabeza == Lista->cola){
+        free(Lista->cabeza);
+        Lista->cabeza = NULL;
+        Lista->cola = NULL;
+        return 1;
+    }
+    // Se crea un puntero para el elemento que se va a borrar
+    nodo_t *eliminado = Lista->cabeza;
+    
+    Lista->cabeza = Lista->cabeza->ant_sig;
+
+    Lista->cabeza->ant_sig = XOR(eliminado, Lista->cabeza->ant_sig);
+    
+
+    free(eliminado);
+
+    return 1;
+}
+
+// Borra el ultimo elemento de la lista
+int borrarFinal(lista_t *Lista, int *e){
+    if (esVacia(Lista)){
+        e = NULL;
+        printf("No se puede eliminar ningun elemento de la lista porque esta vacia\n");
+        return 0;
+    }
+
+    *e = Lista->cola->elemento;
+
+    if (Lista->cola == Lista->cabeza){
+        free(Lista->cola);
+        Lista->cabeza = NULL;
+        Lista->cola = NULL;
+        return 1;
+    }
+
+    nodo_t *eliminado = Lista->cola;
+
+    Lista->cola = Lista->cola->ant_sig;
+
+    Lista->cola->ant_sig = XOR(eliminado, Lista->cola->ant_sig);
+
+    free(eliminado);
+
+    return 1;
+}
 
 // Muestra la lista de inicio a fin
 void listarInicioAFinal(lista_t *Lista){
@@ -224,6 +281,8 @@ int buscar(lista_t *Lista, int e){
 int main(void){
     lista_t *lista1, *lista2, *lista3;
 
+    int i;
+
     lista1 = crearLista(lista1);
     lista2 = crearLista(lista2);
     lista3 = crearLista(lista3);
@@ -238,16 +297,11 @@ int main(void){
     else 
         printf("La lista NO esta vacia\n");
 
-    insertarFinal(lista1, 5);
-    insertarFinal(lista2, 3);
-    insertarPrincipio(lista1, 15);
-    insertarFinal(lista2, 9);
-    insertarPrincipio(lista1, 10);
-    insertarPrincipio(lista2, 12);
-    insertarPrincipio(lista1, 50);
-    insertarPrincipio(lista2, 6);
-    insertarFinal(lista1, 25);
-    insertarPrincipio(lista2, 15);
+    insertarPrincipio(lista1, 5);
+    insertarFinal(lista1, 3);
+    insertarPrincipio(lista1, 25);
+    insertarPrincipio(lista1, 8);
+
 
 
     if (esVacia(lista1))
@@ -261,29 +315,48 @@ int main(void){
         printf("La lista NO esta vacia\n");
 
     listarInicioAFinal(lista1);
-    listarInicioAFinal(lista2);
     listarFinalAInicio(lista1);
-    listarFinalAInicio(lista2);
 
     buscar(lista1, 25);
-    buscar(lista2, 9);
     buscar(lista1, 3);
     buscar(lista1, 50);
     printf("\n");
 
-    insertarOrdenado(lista3, 16);
-    insertarOrdenado(lista3, 32);
-    insertarOrdenado(lista3, 64);
-    insertarOrdenado(lista3, 128);
-    insertarOrdenado(lista3, 256);
-    insertarOrdenado(lista3, 127);
-    insertarOrdenado(lista3, 17);
-    insertarOrdenado(lista3, 15);
-    insertarOrdenado(lista3, 280);
-
+    insertarOrdenado(lista3, 1);
+    insertarOrdenado(lista3, 6);
+    insertarOrdenado(lista3, 4);
+    insertarOrdenado(lista3, 3);
+    insertarOrdenado(lista3, 5);
+    insertarOrdenado(lista3, 2);
+    insertarOrdenado(lista3, 7);
 
     listarInicioAFinal(lista3);
-    listarFinalAInicio(lista3);
+
+    if (borrarPrimero(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+    if (borrarPrimero(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+    if (borrarPrimero(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+    if (borrarPrimero(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+    if (borrarFinal(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+    if (borrarFinal(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+    if (borrarFinal(lista3,&i))
+        printf("Se elimino el elemento %d de la lista\n",i);
+    listarInicioAFinal(lista3);
+
+    listarInicioAFinal(lista3);
+
+
     
     return 0;
 }

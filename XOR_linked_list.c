@@ -99,7 +99,6 @@ int insertarFinal(lista_t *Lista, int e){
 }
 
 // Inserta un elemento de forma ordenada en la lista
-
 int insertarOrdenado(lista_t *Lista, int e){
     nodo_t *nuevo;
 
@@ -109,24 +108,47 @@ int insertarOrdenado(lista_t *Lista, int e){
 
     nuevo->elemento = e;
     
-    if (esVacia(Lista)){
+    if (esVacia(Lista)){ // Caso en el que la lista este vacia
         nuevo->ant_sig = XOR(Lista->cabeza, NULL);
         Lista->cabeza = nuevo;
         Lista->cola = nuevo;
     }
-    else if (e <= Lista->cabeza->elemento){
+    else if (e <= Lista->cabeza->elemento){ // Caso en el que el elemento sea menor que cualquiera de la lista
         nuevo->ant_sig = XOR(Lista->cabeza, NULL);
         nodo_t *sig = XOR(Lista->cabeza->ant_sig, NULL);
         Lista->cabeza->ant_sig = XOR(nuevo, sig);
 
         Lista->cabeza = nuevo;
     }
-    else if (e >= Lista->cola->elemento){
+    else if (e >= Lista->cola->elemento){ // Caso en el que el elemento sea mayor que cualquiera de la lista
         nuevo->ant_sig = XOR(Lista->cola, NULL);
         nodo_t *ant = XOR(Lista->cola->ant_sig, NULL);
         Lista->cola->ant_sig = XOR(ant, nuevo);
 
         Lista->cola = nuevo;
+    }
+    else {
+        // Se busca la posicion en donde el elemento de postsiguiente sea mayor que el elemento de nuevo recorriendo la lista
+        nodo_t *antprevio = NULL;
+        nodo_t *previo = Lista->cabeza;
+        nodo_t *siguiente = XOR(antprevio, previo->ant_sig);
+        nodo_t *postsiguiente = XOR(previo, siguiente->ant_sig);
+
+        while (e >= siguiente->elemento){
+            antprevio = previo;
+            previo = siguiente;
+            siguiente = postsiguiente;
+            postsiguiente = XOR(previo, siguiente->ant_sig);
+        }
+
+        // Cuando consiga la posicion, entonces le asignara al ant_sig de nuevo el XOR del elemento previo con el siguiente
+        nuevo->ant_sig = XOR(previo, siguiente);
+
+        // Al ant_sig de previo se le asigna el XOR de antprevio con nuevo
+        previo->ant_sig = XOR(antprevio, nuevo);
+
+        // Al ant_sig de siguiente se le asigna el XOR de nuevo con postsiguiente
+        siguiente->ant_sig = XOR(nuevo, postsiguiente);
     }
 
     return 1;
@@ -249,15 +271,19 @@ int main(void){
     buscar(lista1, 50);
     printf("\n");
 
-    insertarOrdenado(lista3, 3);
-    insertarOrdenado(lista3, 4);
-    insertarOrdenado(lista3, 5);
-    insertarOrdenado(lista3, 2);
-    insertarOrdenado(lista3, 1);
-    insertarOrdenado(lista3, 1);
-    insertarOrdenado(lista3, 5);
+    insertarOrdenado(lista3, 16);
+    insertarOrdenado(lista3, 32);
+    insertarOrdenado(lista3, 64);
+    insertarOrdenado(lista3, 128);
+    insertarOrdenado(lista3, 256);
+    insertarOrdenado(lista3, 127);
+    insertarOrdenado(lista3, 17);
+    insertarOrdenado(lista3, 15);
+    insertarOrdenado(lista3, 280);
+
 
     listarInicioAFinal(lista3);
+    listarFinalAInicio(lista3);
     
     return 0;
 }

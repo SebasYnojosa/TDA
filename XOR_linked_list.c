@@ -45,7 +45,7 @@ int esVacia(lista_t *Lista){
 int insertarPrincipio(lista_t *Lista, int e){
     nodo_t *nuevo;
 
-     // Verifica si hay memoria suficiente para el nuevo nodo
+    // Verifica si hay memoria suficiente para el nuevo nodo
     if ((nuevo = (nodo_t*)malloc(sizeof(nodo_t))) == NULL)
         return 0;
 
@@ -67,7 +67,6 @@ int insertarPrincipio(lista_t *Lista, int e){
         Lista->cabeza = nuevo;
     }
 
-    printf("Se ingreso el elemento %d al inicio de la lista\n", e);
     return 1;
 }
 
@@ -75,7 +74,7 @@ int insertarPrincipio(lista_t *Lista, int e){
 int insertarFinal(lista_t *Lista, int e){
     nodo_t *nuevo;
 
-     // Verifica si hay memoria suficiente para el nuevo nodo
+    // Verifica si hay memoria suficiente para el nuevo nodo
     if ((nuevo = (nodo_t*)malloc(sizeof(nodo_t))) == NULL)
         return 0;
 
@@ -96,9 +95,43 @@ int insertarFinal(lista_t *Lista, int e){
         Lista->cola = nuevo;
     }
 
-    printf("Se ingreso el elemento %d al final de la lista\n", e);
     return 1;
 }
+
+// Inserta un elemento de forma ordenada en la lista
+
+int insertarOrdenado(lista_t *Lista, int e){
+    nodo_t *nuevo;
+
+    // Verifica si hay memoria suficiente para el nuevo nodo
+    if ((nuevo = (nodo_t*)malloc(sizeof(nodo_t))) == NULL)
+        return 0;
+
+    nuevo->elemento = e;
+    
+    if (esVacia(Lista)){
+        nuevo->ant_sig = XOR(Lista->cabeza, NULL);
+        Lista->cabeza = nuevo;
+        Lista->cola = nuevo;
+    }
+    else if (e <= Lista->cabeza->elemento){
+        nuevo->ant_sig = XOR(Lista->cabeza, NULL);
+        nodo_t *sig = XOR(Lista->cabeza->ant_sig, NULL);
+        Lista->cabeza->ant_sig = XOR(nuevo, sig);
+
+        Lista->cabeza = nuevo;
+    }
+    else if (e >= Lista->cola->elemento){
+        nuevo->ant_sig = XOR(Lista->cola, NULL);
+        nodo_t *ant = XOR(Lista->cola->ant_sig, NULL);
+        Lista->cola->ant_sig = XOR(ant, nuevo);
+
+        Lista->cola = nuevo;
+    }
+
+    return 1;
+} 
+
 
 // Muestra la lista de inicio a fin
 void listarInicioAFinal(lista_t *Lista){
@@ -122,7 +155,7 @@ void listarInicioAFinal(lista_t *Lista){
         previo = actual;
         actual = siguiente;
     }
-    printf("\b<--cola\n");
+    printf("\b<--cola\n\n");
 }
 
 // Muestra la lista desde el final hasta el inicio
@@ -142,7 +175,7 @@ void listarFinalAInicio(lista_t *Lista){
         siguiente = actual;
         actual = previo;
     }
-    printf("\b<--cabeza\n");
+    printf("\b<--cabeza\n\n");
 }
 
 int buscar(lista_t *Lista, int e){
@@ -167,10 +200,11 @@ int buscar(lista_t *Lista, int e){
 
 // Programa de testeo
 int main(void){
-    lista_t *lista1, *lista2;
+    lista_t *lista1, *lista2, *lista3;
 
     lista1 = crearLista(lista1);
     lista2 = crearLista(lista2);
+    lista3 = crearLista(lista3);
 
     if (esVacia(lista1))
         printf("La lista esta vacia\n");
@@ -205,18 +239,25 @@ int main(void){
         printf("La lista NO esta vacia\n");
 
     listarInicioAFinal(lista1);
-    printf("\n");
     listarInicioAFinal(lista2);
-    printf("\n");
     listarFinalAInicio(lista1);
-    printf("\n");
     listarFinalAInicio(lista2);
 
     buscar(lista1, 25);
     buscar(lista2, 9);
     buscar(lista1, 3);
     buscar(lista1, 50);
+    printf("\n");
 
+    insertarOrdenado(lista3, 3);
+    insertarOrdenado(lista3, 4);
+    insertarOrdenado(lista3, 5);
+    insertarOrdenado(lista3, 2);
+    insertarOrdenado(lista3, 1);
+    insertarOrdenado(lista3, 1);
+    insertarOrdenado(lista3, 5);
+
+    listarInicioAFinal(lista3);
     
     return 0;
 }

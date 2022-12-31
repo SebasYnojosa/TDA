@@ -17,22 +17,21 @@ typedef struct lista{
 
 /* Retorna el valor XOR de las direcciones de los nodos */
 nodo_t* XOR(nodo_t *a, nodo_t *b){
+    // El uintptr_t convierte el puntero en un entero para poder hacer la operacion XOR y luego se vuelve el cambio con nodo_t*
     return (nodo_t*)((uintptr_t)(a)^(uintptr_t)(b));
 }
 
-// Funcion que guarda memoria y crea un nodo para la lista
-nodo_t* crearNodo(nodo_t *Nodo, int e){
-    // Guarda memoria para el nuevo nodo
-    Nodo = (nodo_t*)malloc(sizeof(nodo_t));
-    Nodo->elemento = e;
-
-    return Nodo;
-}
-
 // Crea una nueva lista
-void crearLista(lista_t *Lista){
+lista_t* crearLista(lista_t *Lista){
+    if ((Lista = (lista_t*)malloc(sizeof(lista_t))) == NULL){
+        printf("NO HAY MEMORIA SUFICIENTE!!!\n");
+        exit(1);
+    }
+
     Lista->cabeza = NULL;
     Lista->cola = NULL;
+
+    return Lista;
 }
 
 // Retorna 1 si la lista esta vacia o 0 si no lo esta
@@ -43,9 +42,14 @@ int esVacia(lista_t *Lista){
 }
 
 // Inserta un nodo al inicio de la lista XOR y lo hace la nueva cabeza de la lista
-void insertarPrincipio(lista_t *Lista, int e){
-    nodo_t *nuevo = crearNodo(nuevo, e);
+int insertarPrincipio(lista_t *Lista, int e){
+    nodo_t *nuevo;
 
+     // Verifica si hay memoria suficiente para el nuevo nodo
+    if ((nuevo = (nodo_t*)malloc(sizeof(nodo_t))) == NULL)
+        return 0;
+
+    nuevo->elemento = e;
     // Como el nuevo elemento se ingresa al principio, ant_sig del nuevo nodo sera el XOR de la actual cabeza con NULL
     nuevo->ant_sig = XOR(Lista->cabeza, NULL);
 
@@ -64,12 +68,18 @@ void insertarPrincipio(lista_t *Lista, int e){
     }
 
     printf("Se ingreso el elemento %d al inicio de la lista\n", e);
+    return 1;
 }
 
 // Inserta un elemento al final de la lista
-void insertarFinal(lista_t *Lista, int e){
-    nodo_t *nuevo = crearNodo(nuevo, e);
+int insertarFinal(lista_t *Lista, int e){
+    nodo_t *nuevo;
 
+     // Verifica si hay memoria suficiente para el nuevo nodo
+    if ((nuevo = (nodo_t*)malloc(sizeof(nodo_t))) == NULL)
+        return 0;
+
+    nuevo->elemento = e;
     // Como el nuevo elemento se ingresa al final, ant_sig del nuevo nodo sera el XOR de la actual cola con NULL
     nuevo->ant_sig = XOR(Lista->cola, NULL);
 
@@ -87,11 +97,12 @@ void insertarFinal(lista_t *Lista, int e){
     }
 
     printf("Se ingreso el elemento %d al final de la lista\n", e);
+    return 1;
 }
 
 // Muestra la lista de inicio a fin
-void listarInicioAFinal(lista_t Lista){
-    nodo_t *actual = Lista.cabeza;
+void listarInicioAFinal(lista_t *Lista){
+    nodo_t *actual = Lista->cabeza;
     nodo_t *previo = NULL;
     nodo_t *siguiente;
 
@@ -115,8 +126,8 @@ void listarInicioAFinal(lista_t Lista){
 }
 
 // Muestra la lista desde el final hasta el inicio
-void listarFinalAInicio(lista_t Lista){
-    nodo_t *actual = Lista.cola;
+void listarFinalAInicio(lista_t *Lista){
+    nodo_t *actual = Lista->cola;
     nodo_t *siguiente = NULL;
     nodo_t *previo;
 
@@ -134,8 +145,8 @@ void listarFinalAInicio(lista_t Lista){
     printf("\b<--cabeza\n");
 }
 
-int buscar(lista_t Lista, int e){
-    nodo_t *actual = Lista.cabeza;
+int buscar(lista_t *Lista, int e){
+    nodo_t *actual = Lista->cabeza;
     nodo_t *previo = NULL;
     nodo_t *siguiente;
 
@@ -156,39 +167,39 @@ int buscar(lista_t Lista, int e){
 
 // Programa de testeo
 int main(void){
-    lista_t lista1, lista2;
+    lista_t *lista1, *lista2;
 
-    crearLista(&lista1);
-    crearLista(&lista2);
+    lista1 = crearLista(lista1);
+    lista2 = crearLista(lista2);
 
-    if (esVacia(&lista1))
+    if (esVacia(lista1))
         printf("La lista esta vacia\n");
     else 
         printf("La lista NO esta vacia\n");
 
-    if (esVacia(&lista2))
+    if (esVacia(lista2))
         printf("La lista esta vacia\n");
     else 
         printf("La lista NO esta vacia\n");
 
-    insertarFinal(&lista1, 5);
-    insertarFinal(&lista2, 3);
-    insertarPrincipio(&lista1, 15);
-    insertarFinal(&lista2, 9);
-    insertarPrincipio(&lista1, 10);
-    insertarPrincipio(&lista2, 12);
-    insertarPrincipio(&lista1, 50);
-    insertarPrincipio(&lista2, 6);
-    insertarFinal(&lista1, 25);
-    insertarPrincipio(&lista2, 15);
+    insertarFinal(lista1, 5);
+    insertarFinal(lista2, 3);
+    insertarPrincipio(lista1, 15);
+    insertarFinal(lista2, 9);
+    insertarPrincipio(lista1, 10);
+    insertarPrincipio(lista2, 12);
+    insertarPrincipio(lista1, 50);
+    insertarPrincipio(lista2, 6);
+    insertarFinal(lista1, 25);
+    insertarPrincipio(lista2, 15);
 
 
-    if (esVacia(&lista1))
+    if (esVacia(lista1))
         printf("La lista esta vacia\n");
     else 
         printf("La lista NO esta vacia\n");
 
-    if (esVacia(&lista2))
+    if (esVacia(lista2))
         printf("La lista esta vacia\n");
     else 
         printf("La lista NO esta vacia\n");

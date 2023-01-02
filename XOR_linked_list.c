@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <inttypes.h>
 
 /* Estructura de los nodos */
@@ -273,7 +274,6 @@ int buscar(lista_t *Lista, int e){
 
     while (actual != NULL){
         if (actual->elemento == e){
-            printf("Se consiguio el elemento %d en la lista\n", e);
             return 1;
         } else {
             siguiente = XOR(previo, actual->ant_sig);
@@ -282,7 +282,6 @@ int buscar(lista_t *Lista, int e){
             actual = siguiente;
         }
     }
-    printf("No se consiguio el elemento %d\n", e);
     return 0;
 }
 
@@ -320,23 +319,25 @@ int main(void){
                 printf("3. Ver si la lista esta vacia\n");
                 printf("4. Eliminar la cabeza de la lista\n");
                 printf("5. Eliminar el final de la lista\n");
-                printf("6. Vaciar la lista\n");
-                printf("7. Mostrar la lista desde la cabeza hasta el final\n");
-                printf("8. Mostrar la lista desde el final hasta la cabeza\n");
+                printf("6. Buscar un elemento en la lista\n");
+                printf("7. Vaciar la lista\n");
+                printf("8. Mostrar la lista desde la cabeza hasta el final\n");
+                printf("9. Mostrar la lista desde el final hasta la cabeza\n");
                 printf("0. Eliminar la lista y salir al menu\n");
                 printf("? ");
                 scanf("%i", &op);
                 while (op < 0 || op > 8){
                     printf("Opcion Invalida!!!\n");
-                    printf("Que desea hacer con la lista no ordenada?\n\n");
+                    printf("\nQue desea hacer con la lista no ordenada?\n\n");
                     printf("1. Agregar un elemento a la cabeza\n");
                     printf("2. Agregar un elemento al final\n");
                     printf("3. Ver si la lista esta vacia\n");
                     printf("4. Eliminar la cabeza de la lista\n");
                     printf("5. Eliminar el final de la lista\n");
-                    printf("6. Vaciar la lista\n");
-                    printf("7. Mostrar la lista desde la cabeza hasta el final\n");
-                    printf("8. Mostrar la lista desde el final hasta la cabeza\n");
+                    printf("6. Buscar un elemento en la lista\n");
+                    printf("7. Vaciar la lista\n");
+                    printf("8. Mostrar la lista desde la cabeza hasta el final\n");
+                    printf("9. Mostrar la lista desde el final hasta la cabeza\n");
                     printf("0. Eliminar la lista y salir al menu\n");
                     printf("? ");
                     scanf("%i", &op);
@@ -353,6 +354,7 @@ int main(void){
                             printf("Se introdujo %d a la cabeza\n",e);
                         else 
                             printf("MEMORIA INSUFICIENTE!!!\n");
+                        getch();
                         break;
                     } 
                     case 2:{
@@ -365,7 +367,7 @@ int main(void){
                             printf("Se introdujo %d al final\n",e);
                         else 
                             printf("MEMORIA INSUFICIENTE!!!\n");
-
+                        getch();
                         break;
                     }
                     case 3:{
@@ -373,7 +375,7 @@ int main(void){
                             printf("La lista esta vacia\n");
                         else 
                             printf("La lista NO esta vacia\n");
-
+                        getch();
                         break;
                     }
                     case 4:{
@@ -382,7 +384,7 @@ int main(void){
                             printf("Se elimino el elemento %d de la cabeza\n", i);
                         else
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
-
+                        getch();
                         break;
                     }
                     case 5:{
@@ -391,21 +393,36 @@ int main(void){
                             printf("Se elimino el elemento %d del final\n", i);
                         else 
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
-
+                        getch();
                         break;
                     }
                     case 6:{
-                        vaciarLista(listaNOrd);
-                        printf("La lista se vacio completamente\n");
+                        int e;
+                        printf("Ingrese el valor que desea buscar en la lista\n");
+                        printf("? ");
+                        scanf("%i",&e);
+                        if(buscar(listaNOrd,e))
+                            printf("Se ha encontrado el elemento %d en la lista\n",e);
+                        else 
+                            printf("El elemento %d no se encuentra en la lista\n",e);
 
+                        getch();
                         break;
                     }
                     case 7:{
-                        listarInicioAFinal(listaNOrd);
+                        vaciarLista(listaNOrd);
+                        printf("La lista se vacio completamente\n");
+                        getch();
                         break;
                     }
                     case 8:{
+                        listarInicioAFinal(listaNOrd);
+                        getch();
+                        break;
+                    }
+                    case 9:{
                         listarFinalAInicio(listaNOrd);
+                        getch();
                         break;
                     }
 
@@ -423,21 +440,23 @@ int main(void){
                 printf("3. Eliminar la cabeza de la lista\n");
                 printf("4. Eliminar el final de la lista\n");
                 printf("5. Vaciar la lista\n");
-                printf("6. Mostrar la lista desde la cabeza hasta el final\n");
-                printf("7. Mostrar la lista desde el final hasta la cabeza\n");
+                printf("6. Buscar un elemento en la lista\n");
+                printf("7. Mostrar la lista desde la cabeza hasta el final\n");
+                printf("8. Mostrar la lista desde el final hasta la cabeza\n");
                 printf("0. Eliminar la lista y salir al menu\n");
                 printf("? ");
                 scanf("%i", &op);
                 while (op < 0 || op > 7){
                     printf("Opcion Invalida!!!\n");
-                    printf("Que desea hacer con la lista no ordenada?\n\n");
+                    printf("\nQue desea hacer con la lista no ordenada?\n\n");
                     printf("1. Agregar un elemento a la lista\n");
                     printf("2. Ver si la lista esta vacia\n");
                     printf("3. Eliminar la cabeza de la lista\n");
                     printf("4. Eliminar el final de la lista\n");
                     printf("5. Vaciar la lista\n");
-                    printf("6. Mostrar la lista desde la cabeza hasta el final\n");
-                    printf("7. Mostrar la lista desde el final hasta la cabeza\n");
+                    printf("6. Buscar un elemento en la lista\n");
+                    printf("7. Mostrar la lista desde la cabeza hasta el final\n");
+                    printf("8. Mostrar la lista desde el final hasta la cabeza\n");
                     printf("0. Eliminar la lista y salir al menu\n");
                     printf("? ");
                     scanf("%i", &op);
@@ -454,6 +473,7 @@ int main(void){
                             printf("Se introdujo %d de forma ordenada en la lista\n",e);
                         else 
                             printf("MEMORIA INSUFICIENTE!!!\n");
+                        getch();
                         break;
                     }
                     case 2:{
@@ -461,7 +481,7 @@ int main(void){
                             printf("La lista esta vacia\n");
                         else 
                             printf("La lista NO esta vacia\n");
-
+                        getch();
                         break;
                     }
                     case 3:{
@@ -470,7 +490,7 @@ int main(void){
                             printf("Se elimino el elemento %d de la cabeza\n", i);
                         else
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
-
+                        getch();
                         break;
                     }
                     case 4:{
@@ -479,21 +499,36 @@ int main(void){
                             printf("Se elimino el elemento %d del final\n", i);
                         else 
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
-
+                        getch();
                         break;
                     }
                     case 5:{
                         vaciarLista(listaOrd);
                         printf("La lista se vacio completamente\n");
-
+                        getch();
                         break;
                     }
                     case 6:{
-                        listarInicioAFinal(listaOrd);
+                        int e;
+                        printf("Ingrese el valor que desea buscar en la lista\n");
+                        printf("? ");
+                        scanf("%i",&e);
+                        if(buscar(listaOrd,e))
+                            printf("Se ha encontrado el elemento %d en la lista\n",e);
+                        else 
+                            printf("El elemento %d no se encuentra en la lista\n",e);
+
+                        getch();
                         break;
                     }
                     case 7:{
+                        listarInicioAFinal(listaOrd);
+                        getch();
+                        break;
+                    }
+                    case 8:{
                         listarFinalAInicio(listaOrd);
+                        getch();
                         break;
                     }
 

@@ -41,6 +41,7 @@ int esVacia(lista_t *Lista){
     return 0;
 }
 
+
 // Inserta un nodo al inicio de la lista XOR y lo hace la nueva cabeza de la lista
 int insertarPrincipio(lista_t *Lista, int e){
     nodo_t *nuevo;
@@ -157,13 +158,7 @@ int insertarOrdenado(lista_t *Lista, int e){
 
 // Borra el primer elemento de la lista
 int borrarPrimero(lista_t *Lista, int *e){
-    if (esVacia(Lista)){
-        e = NULL;
-        printf("No se puede eliminar ningun elemento de la lista porque esta vacia\n");
-        return 0;
-    }
-
-    *e = Lista->cabeza->elemento;
+    if (esVacia(Lista)) return 0;
 
     if (Lista->cabeza == Lista->cola){
         free(Lista->cabeza);
@@ -173,6 +168,7 @@ int borrarPrimero(lista_t *Lista, int *e){
     }
     // Se crea un puntero para el elemento que se va a borrar
     nodo_t *eliminado = Lista->cabeza;
+    *e = eliminado->elemento;
     
     Lista->cabeza = Lista->cabeza->ant_sig;
 
@@ -186,13 +182,7 @@ int borrarPrimero(lista_t *Lista, int *e){
 
 // Borra el ultimo elemento de la lista
 int borrarFinal(lista_t *Lista, int *e){
-    if (esVacia(Lista)){
-        e = NULL;
-        printf("No se puede eliminar ningun elemento de la lista porque esta vacia\n");
-        return 0;
-    }
-
-    *e = Lista->cola->elemento;
+    if (esVacia(Lista)) return 0;
 
     if (Lista->cola == Lista->cabeza){
         free(Lista->cola);
@@ -202,6 +192,7 @@ int borrarFinal(lista_t *Lista, int *e){
     }
 
     nodo_t *eliminado = Lista->cola;
+    *e = eliminado->elemento;
 
     Lista->cola = Lista->cola->ant_sig;
 
@@ -210,6 +201,24 @@ int borrarFinal(lista_t *Lista, int *e){
     free(eliminado);
 
     return 1;
+}
+
+// Vacia la lista eliminando todos los elementos de esta
+int vaciarLista(lista_t *Lista){
+    int i;
+    if(esVacia(Lista)) return 0;
+
+    while(borrarPrimero(Lista,&i));
+    return 1;
+}
+
+// Elimina la lista dada
+void eliminarLista(lista_t *Lista){
+    // Primero elimina todos los elementos de la lista
+    vaciarLista(Lista);
+
+    // Luego directamente elimina los apuntadores de la lista
+    free(Lista);
 }
 
 // Muestra la lista de inicio a fin
@@ -277,86 +286,223 @@ int buscar(lista_t *Lista, int e){
     return 0;
 }
 
-// Programa de testeo
 int main(void){
-    lista_t *lista1, *lista2, *lista3;
+    int opMenu;
+    printf("Universidad Catolica Andres Bello\n");
+    printf("Algoritmos y Programacion II\n");
+    printf("Proyecto 2 sobre Tipos de Datos Abstractos\n");
+    printf("Listas doblemente enlazadas mediante XOR\n\n");
 
-    int i;
+    do {
+        printf("Que le gustaria hacer?\n\n");
+        printf("1. Crear una lista sin orden\n");
+        printf("2. Crear una lista auto-ordenada\n");
+        printf("0. Salir del programa\n");
+        printf("? ");
+        scanf("%i",&opMenu);
+        while (opMenu < 0 || opMenu > 2){
+            printf("\nOpcion invalida\n");
+            printf("Que le gustaria hacer?\n\n");
+            printf("1. Crear una lista sin orden\n");
+            printf("2. Crear una lista auto-ordenada\n");
+            printf("0. Salir del programa\n");
+            printf("? ");
+            scanf("%i",&opMenu);
+        }   
+        if (opMenu == 1){
+            lista_t *listaNOrd; // Lista no ordenada
+            listaNOrd = crearLista(listaNOrd);
+            int op;
+            do {
+                printf("\nQue desea hacer con la lista no ordenada?\n\n");
+                printf("1. Agregar un elemento a la cabeza\n");
+                printf("2. Agregar un elemento al final\n");
+                printf("3. Ver si la lista esta vacia\n");
+                printf("4. Eliminar la cabeza de la lista\n");
+                printf("5. Eliminar el final de la lista\n");
+                printf("6. Vaciar la lista\n");
+                printf("7. Mostrar la lista desde la cabeza hasta el final\n");
+                printf("8. Mostrar la lista desde el final hasta la cabeza\n");
+                printf("0. Eliminar la lista y salir al menu\n");
+                printf("? ");
+                scanf("%i", &op);
+                while (op < 0 || op > 8){
+                    printf("Opcion Invalida!!!\n");
+                    printf("Que desea hacer con la lista no ordenada?\n\n");
+                    printf("1. Agregar un elemento a la cabeza\n");
+                    printf("2. Agregar un elemento al final\n");
+                    printf("3. Ver si la lista esta vacia\n");
+                    printf("4. Eliminar la cabeza de la lista\n");
+                    printf("5. Eliminar el final de la lista\n");
+                    printf("6. Vaciar la lista\n");
+                    printf("7. Mostrar la lista desde la cabeza hasta el final\n");
+                    printf("8. Mostrar la lista desde el final hasta la cabeza\n");
+                    printf("0. Eliminar la lista y salir al menu\n");
+                    printf("? ");
+                    scanf("%i", &op);
+                }
+                switch (op)
+                {
+                    case 1:{
+                        int e;
+                        printf("Ingrese el valor que quiera agregar a la cabeza\n");
+                        printf("? ");
+                        scanf("%d", &e);
 
-    lista1 = crearLista(lista1);
-    lista2 = crearLista(lista2);
-    lista3 = crearLista(lista3);
+                        if (insertarPrincipio(listaNOrd, e))
+                            printf("Se introdujo %d a la cabeza\n",e);
+                        else 
+                            printf("MEMORIA INSUFICIENTE!!!\n");
+                        break;
+                    } 
+                    case 2:{
+                        int e;
+                        printf("Ingrese el valor que quiera agregar al final\n");
+                        printf("? ");
+                        scanf("%d", &e);
 
-    if (esVacia(lista1))
-        printf("La lista esta vacia\n");
-    else 
-        printf("La lista NO esta vacia\n");
+                        if (insertarFinal(listaNOrd, e))
+                            printf("Se introdujo %d al final\n",e);
+                        else 
+                            printf("MEMORIA INSUFICIENTE!!!\n");
 
-    if (esVacia(lista2))
-        printf("La lista esta vacia\n");
-    else 
-        printf("La lista NO esta vacia\n");
+                        break;
+                    }
+                    case 3:{
+                        if (esVacia(listaNOrd))
+                            printf("La lista esta vacia\n");
+                        else 
+                            printf("La lista NO esta vacia\n");
 
-    insertarPrincipio(lista1, 5);
-    insertarFinal(lista1, 3);
-    insertarPrincipio(lista1, 25);
-    insertarPrincipio(lista1, 8);
+                        break;
+                    }
+                    case 4:{
+                        int i;
+                        if (borrarPrimero(listaNOrd,&i))
+                            printf("Se elimino el elemento %d de la cabeza\n", i);
+                        else
+                            printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
 
+                        break;
+                    }
+                    case 5:{
+                        int i;
+                        if (borrarFinal(listaNOrd,&i))
+                            printf("Se elimino el elemento %d del final\n", i);
+                        else 
+                            printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
 
+                        break;
+                    }
+                    case 6:{
+                        vaciarLista(listaNOrd);
+                        printf("La lista se vacio completamente\n");
 
-    if (esVacia(lista1))
-        printf("La lista esta vacia\n");
-    else 
-        printf("La lista NO esta vacia\n");
+                        break;
+                    }
+                    case 7:{
+                        listarInicioAFinal(listaNOrd);
+                        break;
+                    }
+                    case 8:{
+                        listarFinalAInicio(listaNOrd);
+                        break;
+                    }
 
-    if (esVacia(lista2))
-        printf("La lista esta vacia\n");
-    else 
-        printf("La lista NO esta vacia\n");
+                }
+            }while (op != 0);
+        }
+        else if (opMenu == 2){
+            lista_t *listaOrd; // La lista ordenada
+            listaOrd = crearLista(listaOrd);
+            int op;
+            do {
+                printf("\nQue desea hacer con la lista no ordenada?\n\n");
+                printf("1. Agregar un elemento a la lista\n");
+                printf("2. Ver si la lista esta vacia\n");
+                printf("3. Eliminar la cabeza de la lista\n");
+                printf("4. Eliminar el final de la lista\n");
+                printf("5. Vaciar la lista\n");
+                printf("6. Mostrar la lista desde la cabeza hasta el final\n");
+                printf("7. Mostrar la lista desde el final hasta la cabeza\n");
+                printf("0. Eliminar la lista y salir al menu\n");
+                printf("? ");
+                scanf("%i", &op);
+                while (op < 0 || op > 7){
+                    printf("Opcion Invalida!!!\n");
+                    printf("Que desea hacer con la lista no ordenada?\n\n");
+                    printf("1. Agregar un elemento a la lista\n");
+                    printf("2. Ver si la lista esta vacia\n");
+                    printf("3. Eliminar la cabeza de la lista\n");
+                    printf("4. Eliminar el final de la lista\n");
+                    printf("5. Vaciar la lista\n");
+                    printf("6. Mostrar la lista desde la cabeza hasta el final\n");
+                    printf("7. Mostrar la lista desde el final hasta la cabeza\n");
+                    printf("0. Eliminar la lista y salir al menu\n");
+                    printf("? ");
+                    scanf("%i", &op);
+                }
+                switch (op)
+                {
+                    case 1:{
+                        int e;
+                        printf("Ingrese el valor que quiera agregar a la lista\n");
+                        printf("? ");
+                        scanf("%d", &e);
 
-    listarInicioAFinal(lista1);
-    listarFinalAInicio(lista1);
+                        if (insertarOrdenado(listaOrd,e))
+                            printf("Se introdujo %d de forma ordenada en la lista\n",e);
+                        else 
+                            printf("MEMORIA INSUFICIENTE!!!\n");
+                        break;
+                    }
+                    case 2:{
+                        if (esVacia(listaOrd))
+                            printf("La lista esta vacia\n");
+                        else 
+                            printf("La lista NO esta vacia\n");
 
-    buscar(lista1, 25);
-    buscar(lista1, 3);
-    buscar(lista1, 50);
-    printf("\n");
+                        break;
+                    }
+                    case 3:{
+                        int i;
+                        if (borrarPrimero(listaOrd,&i))
+                            printf("Se elimino el elemento %d de la cabeza\n", i);
+                        else
+                            printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
 
-    insertarOrdenado(lista3, 1);
-    insertarOrdenado(lista3, 6);
-    insertarOrdenado(lista3, 4);
-    insertarOrdenado(lista3, 3);
-    insertarOrdenado(lista3, 5);
-    insertarOrdenado(lista3, 2);
-    insertarOrdenado(lista3, 7);
+                        break;
+                    }
+                    case 4:{
+                        int i;
+                        if (borrarFinal(listaOrd,&i))
+                            printf("Se elimino el elemento %d del final\n", i);
+                        else 
+                            printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
 
-    listarInicioAFinal(lista3);
+                        break;
+                    }
+                    case 5:{
+                        vaciarLista(listaOrd);
+                        printf("La lista se vacio completamente\n");
 
-    if (borrarPrimero(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
-    if (borrarPrimero(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
-    if (borrarPrimero(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
-    if (borrarPrimero(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
-    if (borrarFinal(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
-    if (borrarFinal(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
-    if (borrarFinal(lista3,&i))
-        printf("Se elimino el elemento %d de la lista\n",i);
-    listarInicioAFinal(lista3);
+                        break;
+                    }
+                    case 6:{
+                        listarInicioAFinal(listaOrd);
+                        break;
+                    }
+                    case 7:{
+                        listarFinalAInicio(listaOrd);
+                        break;
+                    }
 
-    listarInicioAFinal(lista3);
+                }
+            }while (op != 0);
+        }
+    }while(opMenu != 0);
 
+    printf("\nGracias por usar este programa!!!\n");
 
-    
     return 0;
 }

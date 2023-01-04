@@ -53,7 +53,7 @@ int insertarPrincipio(lista_t *Lista, int e){
 
     nuevo->elemento = e;
     // Como el nuevo elemento se ingresa al principio, ant_sig del nuevo nodo sera el XOR de la actual cabeza con NULL
-    nuevo->ant_sig = XOR(Lista->cabeza, NULL);
+    nuevo->ant_sig = Lista->cabeza;
 
     // Si la lista esta vacia, entonces se le asigna el nuevo a la cabeza y a la cola
     if (esVacia(Lista)){
@@ -62,7 +62,7 @@ int insertarPrincipio(lista_t *Lista, int e){
     } // Si la lista no esta vacia, entonces ant_sig de la cabeza actual sera XOR del nuevo nodo y el nodo siguiente a la cabeza
     else {
         // Lista->cabeza->ant_sig sera XOR de NULL y el siguiente, entonces si hacemos XOR de ant_sig con NULL, tendremos siguiente
-        nodo_t *sig = XOR(Lista->cabeza->ant_sig, NULL);
+        nodo_t *sig = Lista->cabeza->ant_sig;
         Lista->cabeza->ant_sig = XOR(nuevo, sig);
 
         // Cambiamos la cabeza
@@ -82,7 +82,7 @@ int insertarFinal(lista_t *Lista, int e){
 
     nuevo->elemento = e;
     // Como el nuevo elemento se ingresa al final, ant_sig del nuevo nodo sera el XOR de la actual cola con NULL
-    nuevo->ant_sig = XOR(Lista->cola, NULL);
+    nuevo->ant_sig = Lista->cola;
 
     // Si la lista esta vacia, entonces se le asigna el nuevo a la cabeza y a la cola
     if (esVacia(Lista)){
@@ -90,7 +90,7 @@ int insertarFinal(lista_t *Lista, int e){
         Lista->cola = nuevo;
     }   // Si la lista no esta vacia, entonces ant_sig de la cola actual sera XOR del nuevo nodo y el nodo anterior a la cola 
     else {
-        nodo_t *ant = XOR(Lista->cola->ant_sig, NULL);
+        nodo_t *ant = Lista->cola->ant_sig;
         Lista->cola->ant_sig = XOR(ant, nuevo);
 
         //Cambiamos la cola
@@ -112,20 +112,20 @@ int insertarOrdenado(lista_t *Lista, int e){
     nuevo->elemento = e;
     
     if (esVacia(Lista)){ // Caso en el que la lista este vacia
-        nuevo->ant_sig = XOR(Lista->cabeza, NULL);
+        nuevo->ant_sig = Lista->cabeza;
         Lista->cabeza = nuevo;
         Lista->cola = nuevo;
     }
     else if (e <= Lista->cabeza->elemento){ // Caso en el que el elemento sea menor que cualquiera de la lista
-        nuevo->ant_sig = XOR(Lista->cabeza, NULL);
-        nodo_t *sig = XOR(Lista->cabeza->ant_sig, NULL);
+        nuevo->ant_sig = Lista->cabeza;
+        nodo_t *sig = Lista->cabeza->ant_sig;
         Lista->cabeza->ant_sig = XOR(nuevo, sig);
 
         Lista->cabeza = nuevo;
     }
     else if (e >= Lista->cola->elemento){ // Caso en el que el elemento sea mayor que cualquiera de la lista
-        nuevo->ant_sig = XOR(Lista->cola, NULL);
-        nodo_t *ant = XOR(Lista->cola->ant_sig, NULL);
+        nuevo->ant_sig = Lista->cola;
+        nodo_t *ant = Lista->cola->ant_sig;
         Lista->cola->ant_sig = XOR(ant, nuevo);
 
         Lista->cola = nuevo;
@@ -237,11 +237,21 @@ int borrarPrimeraOcurrencia(lista_t *Lista, int e){
         // Borrara directamente el final de la lista
         return borrarFinal(Lista, &i);
     }
-    else {
+    else { // Caso en el que e se encuentra en la lista pero no es ni la cabeza ni la cola
+        siguiente = XOR(previo, actual->ant_sig);
+        nodo_t *antprevio = XOR(previo->ant_sig, actual);
+        nodo_t *postsiguiente = XOR(actual, siguiente->ant_sig);
 
+        previo->ant_sig = XOR(antprevio, siguiente);
+
+        siguiente->ant_sig = XOR(previo, postsiguiente);
+
+        free(actual);
+
+        return 1;
     }
     // Si actual termina siendo NULL significa que no se consiguio el elemento en la lista por lo tanto retorna 0
-    return 0;
+    if (actual == NULL) return 0;
 }
 
 // Vacia la lista eliminando todos los elementos de esta

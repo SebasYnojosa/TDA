@@ -155,7 +155,7 @@ int insertarOrdenado(lista_t *Lista, int e){
     return 1;
 } 
 
-// Borra el primer elemento de la lista
+// Borra el primer elemento de la lista y devuelve el elemento eliminado
 int borrarPrimero(lista_t *Lista, int *e){
     if (esVacia(Lista)) return 0;
 
@@ -180,7 +180,7 @@ int borrarPrimero(lista_t *Lista, int *e){
     return 1;
 }
 
-// Borra el ultimo elemento de la lista
+// Borra el ultimo elemento de la lista y devuelve el elemento eliminado
 int borrarFinal(lista_t *Lista, int *e){
     if (esVacia(Lista)) return 0;
 
@@ -204,7 +204,7 @@ int borrarFinal(lista_t *Lista, int *e){
     return 1;
 }
 
-// Borra la primera aparicion del elemento dado
+// Borra la primera aparicion del elemento e dado
 int borrarPrimeraOcurrencia(lista_t *Lista, int e){
     if (esVacia(Lista)) return 0;
 
@@ -229,13 +229,14 @@ int borrarPrimeraOcurrencia(lista_t *Lista, int e){
         previo = actual;
         actual = siguiente;
     }
-    // Si actual es distinto de NULL y salio del bucle entonces significa que consiguio el elemento
-    if (actual == Lista->cola){
-        int i;
-        // Borrara directamente el final de la lista
-        return borrarFinal(Lista, &i);
-    }
-    else { // Caso en el que e se encuentra en la lista pero no es ni la cabeza ni la cola
+    if (actual != NULL){
+        // Caso en el que e se encuentre primero en la cola de la lista
+        if (actual == Lista->cola){
+            int i;
+            // Borrara directamente el final de la lista
+            return borrarFinal(Lista, &i);
+        }
+        // Caso en el que e se encuentra en la lista pero no es ni la cabeza ni la cola
         siguiente = XOR(previo, actual->ant_sig);
         nodo_t *antprevio = XOR(previo->ant_sig, actual);
         nodo_t *postsiguiente = XOR(actual, siguiente->ant_sig);
@@ -247,9 +248,9 @@ int borrarPrimeraOcurrencia(lista_t *Lista, int e){
         free(actual);
 
         return 1;
-    }
+    }    
     // Si actual termina siendo NULL significa que no se consiguio el elemento en la lista por lo tanto retorna 0
-    if (actual == NULL) return 0;
+    return 0;
 }
 
 // Vacia la lista eliminando todos los elementos de esta

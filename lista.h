@@ -41,3 +41,5 @@ void listarInicioAFinal(lista_t *Lista);
 void listarFinalAInicio(lista_t *Lista);
 // Buscar la primera aparicion del elemento dado
 int buscar(lista_t *Lista, int e);
+// Cuenta los elementos de la lista
+int contar(lista_t *Lista);

@@ -43,10 +43,11 @@ int main(void){
                 printf("8.  Vaciar la lista\n");
                 printf("9.  Mostrar la lista desde la cabeza hasta el final\n");
                 printf("10. Mostrar la lista desde el final hasta la cabeza\n");
+                printf("11. Contar los elementos de la lista\n");
                 printf("0.  Eliminar la lista y salir al menu\n");
                 printf("? ");
                 scanf("%i", &op);
-                while (op < 0 || op > 10){
+                while (op < 0 || op > 11){
                     printf("\nQue desea hacer con la lista no ordenada?\n\n");
                     printf("1.  Agregar un elemento a la cabeza\n");
                     printf("2.  Agregar un elemento al final\n");
@@ -58,6 +59,7 @@ int main(void){
                     printf("8.  Vaciar la lista\n");
                     printf("9.  Mostrar la lista desde la cabeza hasta el final\n");
                     printf("10. Mostrar la lista desde el final hasta la cabeza\n");
+                    printf("11. Contar los elementos de la lista\n");
                     printf("0.  Eliminar la lista y salir al menu\n");
                     printf("? ");
                     scanf("%i", &op);
@@ -185,7 +187,13 @@ int main(void){
                         getchar();
                         break;
                     }
-
+                    case 11:{
+                        printf("La lista contiene %d elementos\n",contar(listaNOrd));
+                        printf("\nPresiona para continuar...\n");
+                        getchar();
+                        getchar();
+                        break;
+                    }
                 }
             }while (op != 0);
         }
@@ -195,30 +203,32 @@ int main(void){
             int op;
             do {
                 printf("\nQue desea hacer con la lista no ordenada?\n\n");
-                printf("1. Agregar un elemento a la lista\n");
-                printf("2. Ver si la lista esta vacia\n");
-                printf("3. Eliminar la cabeza de la lista\n");
-                printf("4. Eliminar el final de la lista\n");
-                printf("5. Eliminar la primera ocurrencia\n");
-                printf("6. Vaciar la lista\n");
-                printf("7. Buscar un elemento en la lista\n");
-                printf("8. Mostrar la lista desde la cabeza hasta el final\n");
-                printf("9. Mostrar la lista desde el final hasta la cabeza\n");
-                printf("0. Eliminar la lista y salir al menu\n");
+                printf("1.  Agregar un elemento a la lista\n");
+                printf("2.  Ver si la lista esta vacia\n");
+                printf("3.  Eliminar la cabeza de la lista\n");
+                printf("4.  Eliminar el final de la lista\n");
+                printf("5.  Eliminar la primera ocurrencia\n");
+                printf("6.  Vaciar la lista\n");
+                printf("7.  Buscar un elemento en la lista\n");
+                printf("8.  Mostrar la lista desde la cabeza hasta el final\n");
+                printf("9.  Mostrar la lista desde el final hasta la cabeza\n");
+                printf("10. Contar los elementos de la lista\n");
+                printf("0.  Eliminar la lista y salir al menu\n");
                 printf("? ");
                 scanf("%i", &op);
-                while (op < 0 || op > 9){
+                while (op < 0 || op > 10){
                     printf("\nQue desea hacer con la lista no ordenada?\n\n");
-                    printf("1. Agregar un elemento a la lista\n");
-                    printf("2. Ver si la lista esta vacia\n");
-                    printf("3. Eliminar la cabeza de la lista\n");
-                    printf("4. Eliminar el final de la lista\n");
-                    printf("5. Eliminar la primera ocurrencia\n");
-                    printf("6. Vaciar la lista\n");
-                    printf("7. Buscar un elemento en la lista\n");
-                    printf("8. Mostrar la lista desde la cabeza hasta el final\n");
-                    printf("9. Mostrar la lista desde el final hasta la cabeza\n");
-                    printf("0. Eliminar la lista y salir al menu\n");
+                    printf("1.  Agregar un elemento a la lista\n");
+                    printf("2.  Ver si la lista esta vacia\n");
+                    printf("3.  Eliminar la cabeza de la lista\n");
+                    printf("4.  Eliminar el final de la lista\n");
+                    printf("5.  Eliminar la primera ocurrencia\n");
+                    printf("6.  Vaciar la lista\n");
+                    printf("7.  Buscar un elemento en la lista\n");
+                    printf("8.  Mostrar la lista desde la cabeza hasta el final\n");
+                    printf("9.  Mostrar la lista desde el final hasta la cabeza\n");
+                    printf("10. Contar los elementos de la lista\n");
+                    printf("0.  Eliminar la lista y salir al menu\n");
                     printf("? ");
                     scanf("%i", &op);
                 }
@@ -328,7 +338,13 @@ int main(void){
                         getchar();
                         break;
                     }
-
+                    case 10:{
+                        printf("La lista contiene %d elementos\n",contar(listaOrd));
+                        printf("\nPresiona para continuar...\n");
+                        getchar();
+                        getchar();
+                        break;
+                    }
                 }
             }while (op != 0);
         }

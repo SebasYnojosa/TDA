@@ -331,3 +331,21 @@ int buscar(lista_t *Lista, int e){
     }
     return 0;
 }
+
+// Cuenta los elementos de la lista
+int contar(lista_t *Lista){
+    nodo_t *actual = Lista->cabeza;
+    nodo_t *previo = NULL;
+    nodo_t *siguiente;
+
+    int cont = 0;
+
+    while (actual != NULL){
+        siguiente = XOR(previo, actual->ant_sig);
+        previo = actual;
+        actual = siguiente;
+        cont++;
+    }
+
+    return cont;
+}

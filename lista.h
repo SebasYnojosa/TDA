@@ -26,11 +26,11 @@ int insertarFinal(lista_t *Lista, int e);
 // Inserta un elemento de forma ordenada en la lista
 int insertarOrdenado(lista_t *Lista, int e);
 // Borra el primer elemento de la lista
-int borrarPrimero(lista_t *Lista, int *e);
+int sacarPrincipio(lista_t *Lista, int *e);
 // Borra el ultimo elemento de la lista
-int borrarFinal(lista_t *Lista, int *e);
+int sacarFinal(lista_t *Lista, int *e);
 // Borra la primera aparicion del elemento dado
-int borrarPrimeraOcurrencia(lista_t *Lista, int e);
+int sacarPrimeraOcurrencia(lista_t *Lista, int e);
 // Vacia la lista eliminando todos los elementos de esta
 void Inicializar(lista_t *Lista);
 // Elimina la lista dada

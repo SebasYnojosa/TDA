@@ -110,7 +110,7 @@ int main(void){
                     }
                     case 4:{
                         int i;
-                        if (borrarPrimero(listaNOrd,&i))
+                        if (sacarPrincipio(listaNOrd,&i))
                             printf("Se elimino el elemento %d de la cabeza\n", i);
                         else
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
@@ -122,7 +122,7 @@ int main(void){
                     }
                     case 5:{
                         int i;
-                        if (borrarFinal(listaNOrd,&i))
+                        if (sacarFinal(listaNOrd,&i))
                             printf("Se elimino el elemento %d del final\n", i);
                         else 
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
@@ -138,7 +138,7 @@ int main(void){
                         printf("? ");
                         scanf("%d", &e);
                         getchar();
-                        if(borrarPrimeraOcurrencia(listaNOrd,e))
+                        if(sacarPrimeraOcurrencia(listaNOrd,e))
                             printf("Se borro la primera ocurrencia de %d de la lista\n",e);
                         else
                             printf("No se consiguio %d en la lista, por lo tanto no se pudo realizar la operacion\n",e);
@@ -263,7 +263,7 @@ int main(void){
                     }
                     case 3:{
                         int i;
-                        if (borrarPrimero(listaOrd,&i))
+                        if (sacarPrincipio(listaOrd,&i))
                             printf("Se elimino el elemento %d de la cabeza\n", i);
                         else
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
@@ -275,7 +275,7 @@ int main(void){
                     }
                     case 4:{
                         int i;
-                        if (borrarFinal(listaOrd,&i))
+                        if (sacarFinal(listaOrd,&i))
                             printf("Se elimino el elemento %d del final\n", i);
                         else 
                             printf("La lista esta vacia, por lo tanto no se le puede quitar ningun elemento\n");
@@ -291,7 +291,7 @@ int main(void){
                         printf("? ");
                         scanf("%d", &e);
                         getchar();
-                        if(borrarPrimeraOcurrencia(listaOrd,e))
+                        if(sacarPrimeraOcurrencia(listaOrd,e))
                             printf("Se borro la primera ocurrencia de %d de la lista\n",e);
                         else
                             printf("No se consiguio %d en la lista, por lo tanto no se pudo realizar la operacion\n",e);

@@ -156,7 +156,7 @@ int insertarOrdenado(lista_t *Lista, int e){
 } 
 
 // Borra el primer elemento de la lista y devuelve el elemento eliminado
-int borrarPrimero(lista_t *Lista, int *e){
+int sacarPrincipio(lista_t *Lista, int *e){
     if (esVacia(Lista)) return 0;
 
     if (Lista->cabeza == Lista->cola){
@@ -181,7 +181,7 @@ int borrarPrimero(lista_t *Lista, int *e){
 }
 
 // Borra el ultimo elemento de la lista y devuelve el elemento eliminado
-int borrarFinal(lista_t *Lista, int *e){
+int sacarFinal(lista_t *Lista, int *e){
     if (esVacia(Lista)) return 0;
 
     if (Lista->cola == Lista->cabeza){
@@ -205,13 +205,13 @@ int borrarFinal(lista_t *Lista, int *e){
 }
 
 // Borra la primera aparicion del elemento e dado
-int borrarPrimeraOcurrencia(lista_t *Lista, int e){
+int sacarPrimeraOcurrencia(lista_t *Lista, int e){
     if (esVacia(Lista)) return 0;
 
     if (Lista->cabeza->elemento == e){
         int i;
         // Borrara directamente el primer elemento de la lista en caso de que este sea igual a e
-        return borrarPrimero(Lista, &i);
+        return sacarPrincipio(Lista, &i);
     }
     
     // En caso de que no sea el primero tendra que buscar el elemento hasta que aparezca
@@ -234,7 +234,7 @@ int borrarPrimeraOcurrencia(lista_t *Lista, int e){
         if (actual == Lista->cola){
             int i;
             // Borrara directamente el final de la lista
-            return borrarFinal(Lista, &i);
+            return sacarFinal(Lista, &i);
         }
         // Caso en el que e se encuentra en la lista pero no es ni la cabeza ni la cola
         siguiente = XOR(previo, actual->ant_sig);
@@ -256,7 +256,7 @@ int borrarPrimeraOcurrencia(lista_t *Lista, int e){
 // Vacia la lista eliminando todos los elementos de esta
 void Inicializar(lista_t *Lista){
     int i;
-    while(borrarPrimero(Lista,&i));
+    while(sacarPrincipio(Lista,&i));
 }
 
 // Elimina la lista dada
